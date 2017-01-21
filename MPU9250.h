@@ -32,7 +32,7 @@ private:
     float acc_divider;
     float gyro_divider;
 
-    int calib_data[3];
+    int acc_calib_data[3];
     float magnetometer_ASA[3];
 };
 

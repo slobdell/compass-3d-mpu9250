@@ -258,9 +258,9 @@ void MPU9250::calib_acc()
     //temp_scale=WriteReg(MPUREG_ACCEL_CONFIG, 0x80>>axis);
 
     ReadRegs(MPUREG_SELF_TEST_X,response,4);
-    calib_data[0] = ((response[0]&11100000) >> 3) | ((response[3]&00110000) >> 4);
-    calib_data[1] = ((response[1]&11100000) >> 3) | ((response[3]&00001100) >> 2);
-    calib_data[2] = ((response[2]&11100000) >> 3) | ((response[3]&00000011));
+    acc_calib_data[0] = ((response[0]&11100000) >> 3) | ((response[3]&00110000) >> 4);
+    acc_calib_data[1] = ((response[1]&11100000) >> 3) | ((response[3]&00001100) >> 2);
+    acc_calib_data[2] = ((response[2]&11100000) >> 3) | ((response[3]&00000011));
 
     set_acc_scale(temp_scale);
 }
@@ -310,9 +310,11 @@ void MPU9250::update()
     for(i=0; i<3; i++) {
         bit_data[i] = ((int16_t)response[i*2] << 8) | response[i*2+1];
     }
-    _ax = G_SI * bit_data[0] / acc_divider;
-    _ay = G_SI * bit_data[1] / acc_divider;
-    _az = G_SI * bit_data[2] / acc_divider;
+
+    _ax = G_SI * (bit_data[0] + 0) / acc_divider;
+    _ay = G_SI * (bit_data[1] + 0) / acc_divider;
+    _az = G_SI * (bit_data[2] + 0) / acc_divider;
+	// printf("%d, %d, %d\n", acc_calib_data[0], acc_calib_data[1], acc_calib_data[2]); 
 
     //Get temperature
     bit_data[0] = ((int16_t)response[i*2] << 8) | response[i*2+1];
